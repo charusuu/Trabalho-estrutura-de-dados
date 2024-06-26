@@ -2,10 +2,11 @@
 #include <stdlib.h>
 #include <math.h>
 #include <time.h>
+#include <locale.h>
 
 // Definindo a estrutura do ponto
-/* Ponto: Estrutura que representa um ponto no espaÁo com um ID e coordenadas (PX, PY).
-Individuo: Estrutura que representa um indivÌduo (rota) com um vetor de IDs de pontos e um valor (custo) associado ‡ rota.*/
+/* Ponto: Estrutura que representa um ponto no espa√ßo com um ID e coordenadas (PX, PY).
+Individuo: Estrutura que representa um indiv√≠duo (rota) com um vetor de IDs de pontos e um valor (custo) associado √† rota.*/
 
 typedef struct {
     int Id;     // Identificador do ponto
@@ -13,23 +14,23 @@ typedef struct {
     float PY;   // Coordenada Y do ponto
 } Ponto;
 
-// Definindo a estrutura do indivÌduo
+// Definindo a estrutura do indiv√≠duo
 typedef struct {
     int Individuo[10];  // Vetor que representa a rota dos pontos (de 0 a 9)
     float Valor;        // Custo total da rota
 } Individuo;
 
-// FunÁ„o para calcular a dist‚ncia euclidiana entre dois pontos
-/*Essa funÁ„o calcula a dist‚ncia euclidiana entre dois pontos usando a fÛrmula da dist‚ncia:
+// Fun√ß√£o para calcular a dist√¢ncia euclidiana entre dois pontos
+/*Essa fun√ß√£o calcula a dist√¢ncia euclidiana entre dois pontos usando a f√≥rmula da dist√¢ncia:
 distancia=(x2 -x1 )^2 +(y 2? -y 1? )^2 tambem e tirado a raiz quadrada do resultado*/
  
 float calcular_distancia(Ponto a, Ponto b) {
-    // Calcula a dist‚ncia euclidiana usando a fÛrmula da dist‚ncia
+    // Calcula a dist√¢ncia euclidiana usando a f√≥rmula da dist√¢ncia
     return sqrt(pow(a.PX - b.PX, 2) + pow(a.PY - b.PY, 2));
 }
 
-// FunÁ„o de comparaÁ„o para ordenar os indivÌduos pelo valor
-/*Essa funÁ„o compara dois indivÌduos com base no valor da rota. … usada pelo qsort para ordenar a populaÁ„o pelo custo da rota.*/
+// Fun√ß√£o de compara√ß√£o para ordenar os indiv√≠duos pelo valor
+/*Essa fun√ß√£o compara dois indiv√≠duos com base no valor da rota. √â usada pelo qsort para ordenar a popula√ß√£o pelo custo da rota.*/
 
 int comparar_individuos(const void *a, const void *b) {
     Individuo *indA = (Individuo *)a;
@@ -39,8 +40,8 @@ int comparar_individuos(const void *a, const void *b) {
     return (indA->Valor > indB->Valor) - (indA->Valor < indB->Valor);
 }
 
-// FunÁ„o para preencher um vetor de inteiros de 0 a 9 sem repetiÁ„o
-/*Essa funÁ„o preenche um vetor de 0 a 9 e o embaralha aleatoriamente, garantindo que n„o haja repetiÁ„o de valores.*/
+// Fun√ß√£o para preencher um vetor de inteiros de 0 a 9 sem repeti√ß√£o
+/*Essa fun√ß√£o preenche um vetor de 0 a 9 e o embaralha aleatoriamente, garantindo que n√£o haja repeti√ß√£o de valores.*/
 
 void preencher_vetor_individuo(int vetor[10]) {
     int i, j, temp;
@@ -57,12 +58,12 @@ void preencher_vetor_individuo(int vetor[10]) {
     }
 }
 
-// FunÁ„o para criar e preencher o vetor Pontos
-/*Essa funÁ„o preenche um vetor de pontos com IDs sequenciais e coordenadas X e Y aleatÛrias.*/
+// Fun√ß√£o para criar e preencher o vetor Pontos
+/*Essa fun√ß√£o preenche um vetor de pontos com IDs sequenciais e coordenadas X e Y aleat√≥rias.*/
 
 void preencher_pontos(Ponto pontos[10]) {
     int i;
-    // Atribui um ID e coordenadas X e Y aleatÛrias para cada ponto
+    // Atribui um ID e coordenadas X e Y aleat√≥rias para cada ponto
     for (i = 0; i < 10; i++) {
         pontos[i].Id = i;
         pontos[i].PX = (float)rand() / RAND_MAX * 100;
@@ -70,16 +71,16 @@ void preencher_pontos(Ponto pontos[10]) {
     }
 }
 
-// FunÁ„o para calcular a matriz de dist‚ncias
-/*Essa funÁ„o calcula a matriz de dist‚ncias entre todos os pares de pontos. A dist‚ncia de um ponto para ele mesmo È zero.*/
+// Fun√ß√£o para calcular a matriz de dist√¢ncias
+/*Essa fun√ß√£o calcula a matriz de dist√¢ncias entre todos os pares de pontos. A dist√¢ncia de um ponto para ele mesmo √© zero.*/
 
 void calcular_matriz_distancias(float dist[10][10], Ponto pontos[10]) {
     int i, j;
-    // Calcula a dist‚ncia entre todos os pares de pontos
+    // Calcula a dist√¢ncia entre todos os pares de pontos
     for (i = 0; i < 10; i++) {
         for (j = 0; j < 10; j++) {
             if (i == j) {
-                dist[i][j] = 0.0;  // Dist‚ncia de um ponto para ele mesmo È zero
+                dist[i][j] = 0.0;  // Dist√¢ncia de um ponto para ele mesmo √© zero
             } else {
                 dist[i][j] = calcular_distancia(pontos[i], pontos[j]);
             }
@@ -87,14 +88,14 @@ void calcular_matriz_distancias(float dist[10][10], Ponto pontos[10]) {
     }
 }
 
-// FunÁ„o para preencher a populaÁ„o com rotas e calcular seus valores
-/*Essa funÁ„o preenche a populaÁ„o com rotas aleatÛrias e calcula o custo total de cada rota.*/
+// Fun√ß√£o para preencher a popula√ß√£o com rotas e calcular seus valores
+/*Essa fun√ß√£o preenche a popula√ß√£o com rotas aleat√≥rias e calcula o custo total de cada rota.*/
 
 void preencher_populacao(Individuo populacao[100], float dist[10][10]) {
     int i, j;
-    // Preenche cada indivÌduo na populaÁ„o
+    // Preenche cada indiv√≠duo na popula√ß√£o
     for (i = 0; i < 100; i++) {
-        // Gera uma rota aleatÛria sem repetiÁ„o de pontos
+        // Gera uma rota aleat√≥ria sem repeti√ß√£o de pontos
         preencher_vetor_individuo(populacao[i].Individuo);
 
         // Calcula o valor (custo) da rota
@@ -102,26 +103,26 @@ void preencher_populacao(Individuo populacao[100], float dist[10][10]) {
         for (j = 0; j < 9; j++) {
             int ponto_a = populacao[i].Individuo[j];
             int ponto_b = populacao[i].Individuo[j + 1];
-            // Soma a dist‚ncia entre os pontos adjacentes na rota
+            // Soma a dist√¢ncia entre os pontos adjacentes na rota
             populacao[i].Valor += dist[ponto_a][ponto_b];
         }
         // Fechando o ciclo (voltando ao ponto inicial)
         int ponto_a = populacao[i].Individuo[9];
         int ponto_b = populacao[i].Individuo[0];
-        // Adiciona a dist‚ncia para retornar ao ponto inicial
+        // Adiciona a dist√¢ncia para retornar ao ponto inicial
         populacao[i].Valor += dist[ponto_a][ponto_b];
     }
 }
 
-// FunÁ„o para exibir a populaÁ„o ordenada
-/*Essa funÁ„o exibe a populaÁ„o, mostrando a rota e o valor de cada indivÌduo.*/
+// Fun√ß√£o para exibir a popula√ß√£o ordenada
+/*Essa fun√ß√£o exibe a popula√ß√£o, mostrando a rota e o valor de cada indiv√≠duo.*/
 
 void exibir_populacao(Individuo populacao[100]) {
     int i, j;
-    // Exibe cada indivÌduo na populaÁ„o
+    // Exibe cada indiv√≠duo na popula√ß√£o
     for (i = 0; i < 100; i++) {
         printf("Individuo %d: Rota = [", i + 1);
-        // Exibe a rota do indivÌduo
+        // Exibe a rota do indiv√≠duo
         for (j = 0; j < 10; j++) {
             printf("%d ", populacao[i].Individuo[j]);
         }
@@ -130,14 +131,15 @@ void exibir_populacao(Individuo populacao[100]) {
 }
 
 int main() {
-    // Inicializa a semente do gerador de n˙meros aleatÛrios
+    setlocale(LC_ALL, "Portuguese");
+    // Inicializa a semente do gerador de n√∫meros aleat√≥rios
     srand(time(NULL));
 
     // Criando e preenchendo o vetor Pontos com 10 elementos
     Ponto Pontos[10];
     preencher_pontos(Pontos);
 
-    // Criando a matriz Dist de 10x10 para armazenar as dist‚ncias euclidianas
+    // Criando a matriz Dist de 10x10 para armazenar as dist√¢ncias euclidianas
     float Dist[10][10];
     calcular_matriz_distancias(Dist, Pontos);
 
@@ -145,20 +147,20 @@ int main() {
     Individuo Populacao[100];
     preencher_populacao(Populacao, Dist);
 
-    // Ordenando a populaÁ„o pelo campo Valor (custo da rota)
+    // Ordenando a popula√ß√£o pelo campo Valor (custo da rota)
     qsort(Populacao, 100, sizeof(Individuo), comparar_individuos);
 
-    // Exibindo a populaÁ„o ordenada
+    // Exibindo a popula√ß√£o ordenada
     exibir_populacao(Populacao);
 
     return 0;
 }
-/*srand(time(NULL)): Inicializa a semente do gerador de n˙meros aleatÛrios.
+/*srand(time(NULL)): Inicializa a semente do gerador de n√∫meros aleat√≥rios.
 Ponto Pontos[10]: Declara um vetor de 10 pontos.
-preencher_pontos(Pontos): Preenche o vetor de pontos com valores aleatÛrios.
-float Dist[10][10]: Declara uma matriz de dist‚ncias 10x10.
-calcular_matriz_distancias(Dist, Pontos): Calcula a matriz de dist‚ncias entre os pontos.
-Individuo Populacao[100]: Declara um vetor de 100 indivÌduos.
-preencher_populacao(Populacao, Dist): Preenche a populaÁ„o com rotas aleatÛrias e calcula seus valores.
-qsort(Populacao, 100, sizeof(Individuo), comparar_individuos): Ordena a populaÁ„o pelo custo das rotas.
-exibir_populacao(Populacao): Exibe a populaÁ„o ordenada.*/
+preencher_pontos(Pontos): Preenche o vetor de pontos com valores aleat√≥rios.
+float Dist[10][10]: Declara uma matriz de dist√¢ncias 10x10.
+calcular_matriz_distancias(Dist, Pontos): Calcula a matriz de dist√¢ncias entre os pontos.
+Individuo Populacao[100]: Declara um vetor de 100 indiv√≠duos.
+preencher_populacao(Populacao, Dist): Preenche a popula√ß√£o com rotas aleat√≥rias e calcula seus valores.
+qsort(Populacao, 100, sizeof(Individuo), comparar_individuos): Ordena a popula√ß√£o pelo custo das rotas.
+exibir_populacao(Populacao): Exibe a popula√ß√£o ordenada.*/
